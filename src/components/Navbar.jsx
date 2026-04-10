@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
-import { FaSun, FaMoon } from 'react-icons/fa';
+import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa';
+import './Navbar.css';
 
 const NAV_ITEMS = ['Home', 'About', 'Skills', 'Projects', 'Certificates', 'Contact'];
 
@@ -8,6 +9,7 @@ const Navbar = () => {
     const { theme, toggleTheme } = useTheme();
     const [scrolled, setScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [pillStyle, setPillStyle] = useState({ left: 0, width: 0 });
     const navRef = useRef(null);
     const linkRefs = useRef({});
@@ -65,16 +67,12 @@ const Navbar = () => {
         setActiveSection(id);
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
+        setIsMobileMenuOpen(false);
     };
 
     return (
-        <nav
-            className={`fixed top-0 left-0 w-full z-[1000] px-5 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${scrolled
-                    ? 'bg-[rgba(15,23,42,0.6)] backdrop-blur-xl border-b border-white/10 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]'
-                    : 'bg-transparent border-b border-transparent'
-                }`}
-        >
-            <div className="container flex justify-between items-center" style={{ height: 'var(--nav-height)' }}>
+        <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+            <div className="w-full px-6 lg:px-12 nav-content" style={{ height: 'var(--nav-height)' }}>
 
                 {/* Logo */}
                 <div
@@ -96,20 +94,13 @@ const Navbar = () => {
                 </div>
 
                 {/* Nav pill container */}
-                <div
-                    ref={navRef}
-                    className="desktop-menu relative flex items-center gap-0.5 bg-white/[0.04] border border-white/[0.09] rounded-full py-1.5 px-2 backdrop-blur-lg"
-                >
+                <div ref={navRef} className="desktop-menu">
                     {/* Sliding background pill */}
                     <div
-                        className="absolute top-1.5 rounded-full pointer-events-none z-0"
+                        className="desktop-menu-pill"
                         style={{
-                            height: 'calc(100% - 12px)',
                             left: pillStyle.left,
                             width: pillStyle.width,
-                            background: 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))',
-                            boxShadow: '0 4px 15px rgba(168,85,247,0.45)',
-                            transition: 'left 0.45s cubic-bezier(0.4, 0, 0.2, 1), width 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
                         }}
                     />
 
@@ -122,10 +113,7 @@ const Navbar = () => {
                                 href={`#${id}`}
                                 ref={el => { if (el) linkRefs.current[id] = el; }}
                                 onClick={e => handleNavClick(e, item)}
-                                className="relative z-[1] py-[7px] px-4 rounded-full text-[0.78rem] font-bold tracking-[0.08em] uppercase no-underline whitespace-nowrap select-none transition-colors duration-400"
-                                style={{ color: isActive ? '#fff' : 'var(--text-secondary)' }}
-                                onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = '#fff'; }}
-                                onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'var(--text-secondary)'; }}
+                                className={`desktop-menu-link ${isActive ? 'active' : ''}`}
                             >
                                 {item}
                             </a>
@@ -133,14 +121,49 @@ const Navbar = () => {
                     })}
                 </div>
 
-                {/* Theme toggle */}
-                <button
-                    onClick={toggleTheme}
-                    className="bg-white/[0.07] border border-white/[0.12] text-[var(--text-main)] cursor-pointer text-[1.1rem] w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 shrink-0 hover:bg-[rgba(168,85,247,0.25)]"
-                >
-                    {theme === 'dark' ? <FaSun /> : <FaMoon />}
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    {/* Theme toggle */}
+                    <button
+                        onClick={toggleTheme}
+                        className="theme-toggle"
+                        aria-label="Toggle theme"
+                    >
+                        {theme === 'dark' ? <FaSun /> : <FaMoon />}
+                    </button>
 
+                    {/* Mobile Menu Toggle */}
+                    <button
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        className={`mobile-menu-toggle ${isMobileMenuOpen ? 'open' : ''}`}
+                        aria-label="Toggle menu"
+                    >
+                        <div className="hamburger-lines">
+                            <span className="line line1"></span>
+                            <span className="line line2"></span>
+                            <span className="line line3"></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            {/* Mobile Menu Dropdown */}
+            <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
+                <div className="mobile-menu-inner">
+                    {NAV_ITEMS.map(item => {
+                        const id = item.toLowerCase();
+                        const isActive = activeSection === id;
+                        return (
+                            <a
+                                key={`mobile-${item}`}
+                                href={`#${id}`}
+                                onClick={e => handleNavClick(e, item)}
+                                className={`mobile-menu-link ${isActive ? 'active' : ''}`}
+                            >
+                                {item}
+                            </a>
+                        );
+                    })}
+                </div>
             </div>
         </nav>
     );

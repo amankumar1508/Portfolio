@@ -68,7 +68,7 @@ const Footer = () => {
                 </div>
 
                 <div className="footer-bottom">
-                    <p>&copy; {currentYear} Aman. All rights reserved.</p>
+                    <p>&copy; {currentYear} Aman Kumar. All rights reserved.</p>
                     <div className="footer-bottom-links">
                         <a href="#privacy">Privacy Policy</a>
                         <a href="#terms">Terms of Service</a>

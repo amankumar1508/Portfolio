@@ -148,6 +148,12 @@ p,
   padding: 0 32px;
 }
 
+@media (max-width: 640px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
 .section {
   padding: 100px 0;
   position: relative;

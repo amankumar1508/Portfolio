@@ -98,7 +98,7 @@ const Hero = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.7 }}
                     >
-                        <Button onClick={() => window.open('/Aman_Kumar_Resume.pdf', '_blank')}>View Resume</Button>
+                        <Button onClick={() => window.open('/aman_kumar.html', '_blank')}>View Resume</Button>
                         <Button variant="outline" onClick={() => window.location.href = '#projects'}>View Projects</Button>
                     </motion.div>
                 </motion.div>

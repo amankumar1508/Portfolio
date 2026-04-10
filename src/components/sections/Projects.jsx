@@ -47,9 +47,23 @@ const Projects = () => {
     return (
         <section id="projects" className="section" style={{ background: 'var(--bg-color)' }}>
             <div className="container">
-                <h2 className="section-title">Featured Projects</h2>
+                <motion.h2
+                    className="section-title"
+                    initial={{ opacity: 0, y: -20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                >
+                    Featured Projects
+                </motion.h2>
 
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '40px' }}>
+                <motion.div
+                    style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '15px', marginBottom: '40px' }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     {['All', 'Robotics', 'IoT', 'Web'].map(cat => (
                         <button
                             key={cat}
@@ -69,17 +83,19 @@ const Projects = () => {
                             {cat}
                         </button>
                     ))}
-                </div>
+                </motion.div>
 
                 <motion.div layout className="projects-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px' }}>
-                    <AnimatePresence>
-                        {filteredProjects.map((project) => (
+                    <AnimatePresence mode="popLayout">
+                        {filteredProjects.map((project, index) => (
                             <motion.div
                                 layout
                                 key={project.id}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
+                                initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                exit={{ opacity: 0, scale: 0.9, y: 30 }}
+                                transition={{ duration: 0.4, delay: index * 0.1 }}
                                 className="glass-card"
                                 style={{ padding: '30px', display: 'flex', flexDirection: 'column' }}
                             >
