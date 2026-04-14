@@ -65,7 +65,7 @@ const CustomCursor = () => {
         const cleanupLinks = handleLinkHoverEvents();
 
         // MutationObserver to attach listeners to new elements (like after route changes or modal opens)
-        const observer = new MutationObserver(() => {
+        new MutationObserver(() => {
             // Re-attach listeners is expensive, simpler to delegate or just re-run for this demo
             // For better perf in production, we'd use event delegation or a single global listener checking e.target
         });
@@ -105,11 +105,14 @@ const CustomCursor = () => {
         <>
             <div
                 ref={cursorRef}
-                className={`custom-cursor-outline ${isHovering ? 'hover' : ''}`}
-            />
+                className={`custom-cursor-dev ${isHovering ? 'hover' : ''}`}
+            >
+                {isHovering ? '</>' : '>_'}
+            </div>
+            {/* The dot is kept simply as the direct tip tracking point to maintain pixel-perfect precision tracking */}
             <div
                 ref={cursorDotRef}
-                className={`custom-cursor-dot ${isHovering ? 'hover' : ''}`}
+                className={`custom-cursor-dev-dot ${isHovering ? 'hover' : ''}`}
             />
         </>
     );

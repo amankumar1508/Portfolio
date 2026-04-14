@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
 const ThemeContext = createContext();
@@ -5,25 +6,32 @@ const ThemeContext = createContext();
 export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
-    // Initialize state from local storage or default to 'dark'
     const [theme, setTheme] = useState(() => {
         return localStorage.getItem('portfolio-theme') || 'dark';
     });
 
-    // useEffect to apply theme class to body and save to local storage
-    // REASON: Synchronizing React state (theme) with external side effects (DOM class, LocalStorage).
+    const [colorTheme, setColorTheme] = useState(() => {
+        return localStorage.getItem('portfolio-color-theme') || 'rose';
+    });
+
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('portfolio-theme', theme);
     }, [theme]);
+
+    useEffect(() => {
+        document.documentElement.setAttribute('data-color', colorTheme);
+        localStorage.setItem('portfolio-color-theme', colorTheme);
+    }, [colorTheme]);
 
     const toggleTheme = () => {
         setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
     };
 
     return (
-        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ThemeContext.Provider value={{ theme, toggleTheme, colorTheme, setColorTheme }}>
             {children}
         </ThemeContext.Provider>
     );
 };
+

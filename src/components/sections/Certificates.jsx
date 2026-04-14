@@ -29,7 +29,15 @@ const Certificates = () => {
     return (
         <section id="certificates" className="section">
             <div className="container">
-                <h2 className="section-title">Certifications</h2>
+                <motion.h2
+                    className="section-title"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                >
+                    Certifications
+                </motion.h2>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
                     {certificatesData.map((cert, index) => (
@@ -37,10 +45,16 @@ const Certificates = () => {
                             layoutId={`card-container-${cert.id}`}
                             key={cert.id}
                             className="glass-card"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
                             viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
+                            transition={{ delay: index * 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                            whileHover={{
+                                y: -10,
+                                scale: 1.02,
+                                boxShadow: '0 25px 50px rgba(0,0,0,0.4), 0 0 20px rgba(var(--primary-rgb), 0.15)',
+                                borderColor: 'rgba(var(--primary-rgb), 0.3)',
+                            }}
                             onClick={() => setSelectedId(cert.id)}
                             style={{ cursor: 'pointer', overflow: 'hidden' }}
                         >
@@ -49,7 +63,7 @@ const Certificates = () => {
                                     src={cert.image}
                                     alt={cert.title}
                                     style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
-                                    whileHover={{ scale: 1.05 }}
+                                    whileHover={{ scale: 1.08 }}
                                 />
                             </motion.div>
                             <div style={{ padding: '25px' }}>

@@ -1,9 +1,8 @@
 .navbar {
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
-    height: var(--nav-height);
     z-index: 1000;
     transition: var(--transition);
     display: flex;
@@ -88,7 +87,7 @@
     pointer-events: none;
     z-index: 0;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.45);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.45);
     transition: left 0.45s cubic-bezier(0.4, 0, 0.2, 1), width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -141,7 +140,7 @@
 }
 
 .theme-toggle:hover {
-    background-color: rgba(168, 85, 247, 0.25);
+    background-color: rgba(139, 92, 246, 0.25);
 }
 
 [data-theme='light'] .theme-toggle {
@@ -192,7 +191,7 @@
 }
 
 .mobile-menu-toggle:hover {
-    background-color: rgba(168, 85, 247, 0.25);
+    background-color: rgba(139, 92, 246, 0.25);
 }
 
 .hamburger-lines {
@@ -278,11 +277,11 @@
 
 .mobile-menu-link.active {
     color: #fff;
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(59, 130, 246, 0.2));
-    border-color: rgba(168, 85, 247, 0.3);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(192, 132, 252, 0.2));
+    border-color: rgba(139, 92, 246, 0.3);
 }
 
 [data-theme='light'] .mobile-menu-link.active {
     color: var(--primary-color);
-    background: rgba(168, 85, 247, 0.1);
+    background: rgba(139, 92, 246, 0.1);
 }

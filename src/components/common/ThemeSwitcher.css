@@ -1,0 +1,8 @@
+.theme-switcher-container {
+    pointer-events: auto;
+    /* ensure we can click it even if underlying things have pointer events none or something */
+}
+
+.theme-panel {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}

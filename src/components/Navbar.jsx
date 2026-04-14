@@ -1,169 +1,80 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa';
+import { FaHome, FaUser, FaCode, FaFolderOpen, FaEnvelope, FaSun, FaMoon } from 'react-icons/fa';
 import './Navbar.css';
 
-const NAV_ITEMS = ['Home', 'About', 'Skills', 'Projects', 'Certificates', 'Contact'];
+const NAV_ITEMS = [
+    { id: 'home', label: 'HOME', icon: <FaHome size={12} /> },
+    { id: 'about', label: 'ABOUT', icon: <FaUser size={12} /> },
+    { id: 'skills', label: 'TECH STACK', icon: <FaCode size={12} /> },
+    { id: 'projects', label: 'PROJECTS', icon: <FaFolderOpen size={12} /> },
+    { id: 'contact', label: 'CONTACT', icon: <FaEnvelope size={12} /> }
+];
 
 const Navbar = () => {
     const { theme, toggleTheme } = useTheme();
+    const location = useLocation();
+    const navigate = useNavigate();
     const [scrolled, setScrolled] = useState(false);
-    const [activeSection, setActiveSection] = useState('home');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [pillStyle, setPillStyle] = useState({ left: 0, width: 0 });
-    const navRef = useRef(null);
-    const linkRefs = useRef({});
 
-    // Glass effect on scroll
+    // Glass effect on scroll (inside os-content)
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 50);
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        const handleScroll = () => {
+            const osContent = document.getElementById('os-content-scroll');
+            if (osContent) {
+                setScrolled(osContent.scrollTop > 50);
+            } else {
+                setScrolled(window.scrollY > 50);
+            }
+        };
+
+        const osContent = document.getElementById('os-content-scroll');
+        if (osContent) osContent.addEventListener('scroll', handleScroll);
+        else window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            if (osContent) osContent.removeEventListener('scroll', handleScroll);
+            else window.removeEventListener('scroll', handleScroll);
+        };
     }, []);
 
-    // IntersectionObserver — auto-highlight section in view
-    useEffect(() => {
-        const observers = [];
-        NAV_ITEMS.forEach(item => {
-            const id = item.toLowerCase();
-            const el = document.getElementById(id);
-            if (!el) return;
-            const observer = new IntersectionObserver(
-                ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
-                { threshold: 0.2, rootMargin: '-60px 0px -40% 0px' }
-            );
-            observer.observe(el);
-            observers.push(observer);
-        });
-        return () => observers.forEach(o => o.disconnect());
-    }, []);
-
-    // Move the sliding pill
-    const updatePill = () => {
-        const activeEl = linkRefs.current[activeSection];
-        const containerEl = navRef.current;
-        if (!activeEl || !containerEl) return;
-        const containerRect = containerEl.getBoundingClientRect();
-        const activeRect = activeEl.getBoundingClientRect();
-        setPillStyle({
-            left: activeRect.left - containerRect.left,
-            width: activeRect.width,
-        });
-    };
-
-    useEffect(() => {
-        const raf = requestAnimationFrame(updatePill);
-        return () => cancelAnimationFrame(raf);
-    }, [activeSection]);
-
-    useEffect(() => {
-        window.addEventListener('resize', updatePill);
-        return () => window.removeEventListener('resize', updatePill);
-    }, [activeSection]);
-
-    const handleNavClick = (e, item) => {
-        e.preventDefault();
-        const id = item.toLowerCase();
-        setActiveSection(id);
-        const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+    const handleNavClick = () => {
         setIsMobileMenuOpen(false);
     };
 
     return (
-        <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-            <div className="w-full px-6 lg:px-12 nav-content" style={{ height: 'var(--nav-height)' }}>
+        <nav className={`navbar flex justify-center py-6 px-6 relative z-50 ${scrolled ? 'scrolled' : ''}`}>
 
-                {/* Logo */}
-                <div
-                    className="text-[1.1rem] font-extrabold tracking-wide w-[50px] h-[50px] flex items-center justify-center cursor-pointer rounded-[10px] border-2 border-[var(--primary-color)] shrink-0 transition-shadow duration-400"
-                    style={{
-                        background: 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        boxShadow: '0 0 12px rgba(168,85,247,0.35)',
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 22px rgba(168,85,247,0.65)'}
-                    onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 12px rgba(168,85,247,0.35)'}
-                    onClick={() => {
-                        setActiveSection('home');
-                        document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                >
-                    AK
-                </div>
-
-                {/* Nav pill container */}
-                <div ref={navRef} className="desktop-menu">
-                    {/* Sliding background pill */}
-                    <div
-                        className="desktop-menu-pill"
-                        style={{
-                            left: pillStyle.left,
-                            width: pillStyle.width,
-                        }}
-                    />
-
-                    {NAV_ITEMS.map(item => {
-                        const id = item.toLowerCase();
-                        const isActive = activeSection === id;
-                        return (
-                            <a
-                                key={item}
-                                href={`#${id}`}
-                                ref={el => { if (el) linkRefs.current[id] = el; }}
-                                onClick={e => handleNavClick(e, item)}
-                                className={`desktop-menu-link ${isActive ? 'active' : ''}`}
-                            >
-                                {item}
-                            </a>
-                        );
-                    })}
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    {/* Theme toggle */}
-                    <button
-                        onClick={toggleTheme}
-                        className="theme-toggle"
-                        aria-label="Toggle theme"
-                    >
-                        {theme === 'dark' ? <FaSun /> : <FaMoon />}
-                    </button>
-
-                    {/* Mobile Menu Toggle */}
-                    <button
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className={`mobile-menu-toggle ${isMobileMenuOpen ? 'open' : ''}`}
-                        aria-label="Toggle menu"
-                    >
-                        <div className="hamburger-lines">
-                            <span className="line line1"></span>
-                            <span className="line line2"></span>
-                            <span className="line line3"></span>
-                        </div>
-                    </button>
-                </div>
+            {/* Desktop Navbar container (matching charmireddy EXACTLY) */}
+            <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10">
+                {NAV_ITEMS.map((item) => {
+                    const targetPath = item.id === 'home' ? '/' : `/${item.id}`;
+                    return (
+                        <NavLink
+                            key={item.id}
+                            to={targetPath}
+                            onClick={handleNavClick}
+                            className={({ isActive }) => `flex items-center gap-2 text-[10px] md:text-xs tracking-widest font-semibold pb-1 border-b-2 transition-all duration-300 ${isActive ? 'text-[var(--primary-color)] border-[var(--primary-color)]' : 'text-[#6b7280] border-transparent hover:text-[var(--primary-color)] hover:border-[var(--primary-color)]/50'}`}
+                            style={{ textDecoration: 'none' }}
+                        >
+                            {item.icon}
+                            <span>{item.label}</span>
+                        </NavLink>
+                    );
+                })}
             </div>
 
-            {/* Mobile Menu Dropdown */}
-            <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
-                <div className="mobile-menu-inner">
-                    {NAV_ITEMS.map(item => {
-                        const id = item.toLowerCase();
-                        const isActive = activeSection === id;
-                        return (
-                            <a
-                                key={`mobile-${item}`}
-                                href={`#${id}`}
-                                onClick={e => handleNavClick(e, item)}
-                                className={`mobile-menu-link ${isActive ? 'active' : ''}`}
-                            >
-                                {item}
-                            </a>
-                        );
-                    })}
-                </div>
+            {/* Absolute positioning for theme/mobile buttons to keep nav centered */}
+            <div className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-4">
+                <button
+                    onClick={toggleTheme}
+                    className="text-[#6b7280] hover:text-[var(--primary-color)] transition-colors bg-transparent border-none cursor-pointer"
+                    aria-label="Toggle theme"
+                >
+                    {theme === 'dark' ? <FaSun size={14} /> : <FaMoon size={14} />}
+                </button>
             </div>
         </nav>
     );

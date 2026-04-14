@@ -35,8 +35,6 @@ const formReducer = (state, action) => {
     }
 };
 
-// --- Sub-components moved outside Contact to fix focus loss (typing bug) ---
-
 const LoadingSpinner = () => (
     <svg className="w-5 h-5" style={{ animation: 'spin 1s linear infinite' }} viewBox="0 0 24 24" fill="none">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
@@ -50,10 +48,10 @@ const InputField = ({ label, name, type = "text", value, error, isTextArea = fal
     const isActive = isFocused || hasValue;
 
     const baseInputClasses = `w-full px-4 py-3 rounded-xl text-[var(--text-main)] text-base outline-none transition-all duration-300 
-        bg-white/[0.05] border ${error ? 'border-red-500' : isFocused ? 'border-[#A855F7]' : 'border-white/10'}`;
+        bg-white/[0.05] border ${error ? 'border-red-500' : isFocused ? 'border-[var(--primary-color)]' : 'border-white/10'}`;
 
     const focusGlowStyle = isFocused ? {
-        boxShadow: '0 0 15px rgba(168, 85, 247, 0.3), 0 0 30px rgba(168, 85, 247, 0.1)',
+        boxShadow: '0 0 15px rgba(var(--primary-rgb), 0.3), 0 0 30px rgba(var(--primary-rgb), 0.1)',
         animation: 'focus-glow-pulse 2s ease-in-out infinite'
     } : {};
 
@@ -64,7 +62,7 @@ const InputField = ({ label, name, type = "text", value, error, isTextArea = fal
                     ? 'top-[-10px] text-xs px-2 bg-[#161d2f] rounded'
                     : 'top-3 text-sm'
                     }`}
-                style={{ color: isFocused ? '#A855F7' : 'var(--text-secondary)' }}
+                style={{ color: isFocused ? 'var(--primary-color)' : 'var(--text-secondary)' }}
             >
                 {label}
             </label>
@@ -100,8 +98,6 @@ const InputField = ({ label, name, type = "text", value, error, isTextArea = fal
     );
 };
 
-// --- Main Contact Component ---
-
 const Contact = () => {
     const [state, dispatch] = useReducer(formReducer, initialState);
     const [focusedField, setFocusedField] = useState(null);
@@ -124,26 +120,22 @@ const Contact = () => {
         try {
             dispatch({ type: 'SUBMIT_START' });
 
-            // Using Vite environment variables (configurable in .env)
             const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
             const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
             const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-            // Extra check for leftover placeholders in .env
             const isPlaceholder = (val) => !val || val.includes('your_') || val.length < 5;
 
             if (isPlaceholder(serviceId) || isPlaceholder(templateId) || isPlaceholder(publicKey)) {
-                console.error("DEBUG: One or more EmailJS keys are still placeholders or missing in .env.");
-                throw new Error("EmailJS is not fully configured. Please check your .env file and ensure values like 'your_service_id' are replaced with real keys.");
+                throw new Error("EmailJS missing configuration.");
             }
 
-            // Enhanced Template Parameters (Ensure these match your EmailJS Dashboard)
             const templateParams = {
                 from_name: state.name,
                 from_email: state.email,
-                to_name: 'Aman', // Your name (recipient)
+                to_name: 'Aman',
                 message: state.message,
-                reply_to: state.email, // This allows you to reply directly to the sender
+                reply_to: state.email,
             };
 
             const response = await emailjs.send(
@@ -152,15 +144,10 @@ const Contact = () => {
                 templateParams,
                 publicKey
             );
-            console.log('SUCCESS!', response.status, response.text);
             dispatch({ type: 'SUBMIT_SUCCESS' });
             setTimeout(() => dispatch({ type: 'RESET_STATUS' }), 4000);
         } catch (err) {
-            console.log('FAILED...', err);
-            dispatch({
-                type: 'SUBMIT_ERROR',
-                errors: { submit: err.message || 'Failed to send message. Please try again later.' }
-            });
+            dispatch({ type: 'SUBMIT_ERROR', errors: { submit: err.message || 'Failed to send message.' } });
         }
     };
 
@@ -181,67 +168,60 @@ const Contact = () => {
     ];
 
     return (
-        <section id="contact" className="section relative overflow-hidden">
-            {/* Background Glow Blobs */}
+        <section id="contact" className="min-h-full flex flex-col justify-center py-20 px-4 relative overflow-hidden">
             <div
-                className="absolute top-1/2 left-[20%] w-[600px] h-[600px] pointer-events-none"
+                className="absolute top-1/2 left-[20%] w-[600px] h-[600px] pointer-events-none z-0"
                 style={{
-                    background: 'radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%)',
+                    background: 'radial-gradient(circle, rgba(var(--primary-rgb), 0.12) 0%, transparent 70%)',
                     transform: 'translate(-50%, -50%)',
                 }}
             />
             <div
-                className="absolute bottom-0 right-[10%] w-[400px] h-[400px] pointer-events-none"
+                className="absolute bottom-0 right-[10%] w-[400px] h-[400px] pointer-events-none z-0"
                 style={{
-                    background: 'radial-gradient(circle, rgba(217, 70, 239, 0.08) 0%, transparent 70%)',
+                    background: 'radial-gradient(circle, rgba(var(--primary-rgb), 0.08) 0%, transparent 70%)',
                 }}
             />
 
-            <div className="container">
-                {/* Section Title */}
+            <div className="container relative z-10 w-full max-w-[1000px] mx-auto">
                 <motion.h2
-                    className="section-title text-center mb-16"
+                    className="text-4xl md:text-5xl font-extrabold mb-12 text-white text-center tracking-tight"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true }}
-                    style={{ fontFamily: 'var(--font-heading)' }}
                 >
-                    Get In <span style={{ color: 'var(--primary-color)' }}>Touch</span>
+                    Get In <motion.span
+                        style={{ color: 'var(--primary-color)', display: 'inline-block' }}
+                        animate={{ textShadow: ['0 0 0px var(--primary-color)', '0 0 20px var(--primary-color)', '0 0 0px var(--primary-color)'] }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                    >Touch</motion.span>
                 </motion.h2>
 
                 <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    initial={{ opacity: 0, y: 50, scale: 0.97 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true }}
-                    className="max-w-[1000px] mx-auto rounded-2xl overflow-hidden border border-white/10"
+                    className="rounded-2xl overflow-hidden border border-white/10"
                     style={{
                         background: 'rgba(255, 255, 255, 0.05)',
                         backdropFilter: 'blur(20px)',
-                        WebkitBackdropFilter: 'blur(20px)',
                         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05)',
                     }}
                 >
                     <div className="grid grid-cols-1 md:grid-cols-2">
-                        {/* Left Side: Contact Info */}
+                        {/* Left Side: Info */}
                         <div
                             className="p-10 md:p-14 flex flex-col justify-between relative overflow-hidden"
-                            style={{
-                                background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.9), rgba(217, 70, 239, 0.85))',
-                            }}
+                            style={{ background: 'linear-gradient(135deg, rgba(24, 24, 27, 0.9), rgba(9, 9, 11, 0.95))', borderRight: '1px solid rgba(255,255,255,0.05)' }}
                         >
-                            <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-white/10 pointer-events-none" />
-                            <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-white/5 pointer-events-none" />
+                            <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-[var(--primary-color)] opacity-5 pointer-events-none" />
+                            <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-[var(--primary-color)] opacity-5 pointer-events-none" />
 
                             <div className="relative z-10">
-                                <h2
-                                    className="text-3xl md:text-4xl font-bold mb-4 text-white"
-                                    style={{ fontFamily: 'var(--font-heading)' }}
-                                >
-                                    Let's Work Together
-                                </h2>
-                                <p className="text-white/85 leading-relaxed mb-10 text-lg">
+                                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[var(--text-main)]">Let's Work Together</h2>
+                                <p className="text-[var(--text-secondary)] leading-relaxed mb-10 text-lg">
                                     I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
                                 </p>
 
@@ -249,7 +229,7 @@ const Contact = () => {
                                     {contactDetails.map((detail, idx) => {
                                         const Content = (
                                             <>
-                                                <span className="bg-white/20 p-2.5 rounded-full flex items-center justify-center">
+                                                <span className="bg-[var(--primary-color)]/10 text-[var(--primary-color)] p-2.5 rounded-full flex items-center justify-center">
                                                     {detail.icon}
                                                 </span>
                                                 {detail.text}
@@ -260,17 +240,17 @@ const Contact = () => {
                                             <motion.a
                                                 key={idx}
                                                 href={detail.href}
-                                                className="flex items-center gap-4 text-white no-underline text-base"
-                                                whileHover={{ x: 5 }}
-                                                transition={{ duration: 0.2 }}
+                                                className="flex items-center gap-4 text-[var(--text-main)] hover:text-[var(--primary-color)] transition-colors no-underline text-base"
+                                                whileHover={{ x: 8 }}
+                                                initial={{ opacity: 0, x: -20 }}
+                                                whileInView={{ opacity: 1, x: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: 0.3 + idx * 0.1 }}
                                             >
                                                 {Content}
                                             </motion.a>
                                         ) : (
-                                            <div
-                                                key={idx}
-                                                className="flex items-center gap-4 text-white/85 text-base"
-                                            >
+                                            <div key={idx} className="flex items-center gap-4 text-[var(--text-secondary)] text-base">
                                                 {Content}
                                             </div>
                                         );
@@ -286,12 +266,17 @@ const Contact = () => {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         whileHover={{
-                                            scale: 1.15,
-                                            backgroundColor: social.color + '33', // 20% opacity using brand color
+                                            scale: 1.2,
+                                            y: -5,
+                                            backgroundColor: social.color + '22',
                                             color: social.color,
-                                            borderColor: social.color + '66'
+                                            borderColor: social.color + '55'
                                         }}
-                                        className="flex items-center justify-center w-11 h-11 rounded-full bg-white/11 text-white border border-white/10 transition-all duration-300"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.5 + index * 0.1 }}
+                                        className="flex items-center justify-center w-11 h-11 rounded-full bg-white/5 text-[var(--text-main)] border border-white/10 transition-all duration-300"
                                     >
                                         {social.icon}
                                     </motion.a>
@@ -301,65 +286,21 @@ const Contact = () => {
 
                         {/* Right Side: Form */}
                         <div className="p-10 md:p-14" style={{ background: 'rgba(15, 23, 42, 0.3)' }}>
-                            <h3
-                                className="text-xl font-semibold mb-8"
-                                style={{ color: 'var(--text-main)', fontFamily: 'var(--font-heading)' }}
-                            >
-                                Send me a message
-                            </h3>
+                            <h3 className="text-xl font-semibold mb-8 text-[var(--text-main)]">Send me a message</h3>
 
                             <form onSubmit={handleSubmit}>
-                                <InputField
-                                    label="Your Name"
-                                    name="name"
-                                    value={state.name}
-                                    error={state.errors.name}
-                                    onChange={handleChange}
-                                    onFocus={setFocusedField}
-                                    onBlur={setFocusedField}
-                                    focusedField={focusedField}
-                                />
-                                <InputField
-                                    label="Email Address"
-                                    name="email"
-                                    type="email"
-                                    value={state.email}
-                                    error={state.errors.email}
-                                    onChange={handleChange}
-                                    onFocus={setFocusedField}
-                                    onBlur={setFocusedField}
-                                    focusedField={focusedField}
-                                />
-                                <InputField
-                                    label="Your Message"
-                                    name="message"
-                                    isTextArea
-                                    value={state.message}
-                                    error={state.errors.message}
-                                    onChange={handleChange}
-                                    onFocus={setFocusedField}
-                                    onBlur={setFocusedField}
-                                    focusedField={focusedField}
-                                />
+                                <InputField label="Your Name" name="name" value={state.name} error={state.errors.name} onChange={handleChange} onFocus={setFocusedField} onBlur={setFocusedField} focusedField={focusedField} />
+                                <InputField label="Email Address" name="email" type="email" value={state.email} error={state.errors.email} onChange={handleChange} onFocus={setFocusedField} onBlur={setFocusedField} focusedField={focusedField} />
+                                <InputField label="Your Message" name="message" isTextArea value={state.message} error={state.errors.message} onChange={handleChange} onFocus={setFocusedField} onBlur={setFocusedField} focusedField={focusedField} />
 
-                                {/* Success Message */}
                                 {state.status === 'success' && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: -10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="mb-4 p-3 rounded-xl bg-green-500/10 border border-green-500/30 text-green-400 text-sm text-center"
-                                    >
+                                    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-4 p-3 rounded-xl bg-green-500/10 border border-green-500/30 text-green-400 text-sm text-center">
                                         ✓ Message sent successfully!
                                     </motion.div>
                                 )}
 
-                                {/* Error Message */}
                                 {(state.errors.submit || state.status === 'error') && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: -10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm text-center"
-                                    >
+                                    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm text-center">
                                         {state.errors.submit || "Please fix errors above."}
                                     </motion.div>
                                 )}
@@ -369,10 +310,10 @@ const Contact = () => {
                                     whileTap={{ scale: state.status === 'submitting' ? 1 : 0.98 }}
                                     type="submit"
                                     disabled={state.status === 'submitting'}
-                                    className="w-full py-4 rounded-xl text-white border-none text-base font-semibold cursor-pointer flex items-center justify-center gap-2.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+                                    className="w-full py-4 rounded-xl text-zinc-900 border-none text-base font-bold cursor-pointer flex items-center justify-center gap-2.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
                                     style={{
-                                        background: 'linear-gradient(135deg, #A855F7, #d946ef)',
-                                        boxShadow: '0 10px 25px -5px rgba(168, 85, 247, 0.4)',
+                                        background: 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))',
+                                        boxShadow: '0 10px 25px -5px rgba(var(--primary-rgb), 0.4)',
                                     }}
                                 >
                                     {state.status === 'submitting' ? (

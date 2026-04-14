@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Button from '../common/Button';
+import { useNavigate } from 'react-router-dom';
+
+const roles = ["Software Engineer", "Problem Solver", "Full Stack Developer"];
 
 const Hero = () => {
+    const navigate = useNavigate();
     const [textIndex, setTextIndex] = useState(0);
-    const roles = ["Software Engineer", "Problem Solver", "Full Stack Developer"];
     const [displayText, setDisplayText] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
 
@@ -26,7 +29,7 @@ const Hero = () => {
         }, isDeleting ? 50 : 150);
 
         return () => clearTimeout(timeout);
-    }, [displayText, isDeleting, textIndex]);
+    }, [displayText, isDeleting, textIndex, roles]);
 
     return (
         <section id="home" className="section relative min-h-screen flex items-center overflow-hidden">
@@ -37,34 +40,34 @@ const Hero = () => {
                     className="w-full md:w-auto md:flex-1 max-w-[700px]"
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                 >
                     <motion.h2
                         className="text-3xl md:text-5xl lg:text-6xl font-semibold mb-6"
-                        style={{ color: 'var(--primary-color)' }}
+                        style={{ color: 'var(--text-main)' }}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
+                        transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
                     >
                         Hello, I'm
                     </motion.h2>
 
                     <motion.h1
-                        className="mb-4"
+                        className="mb-4 animate-text-shimmer"
                         style={{
                             fontFamily: "'Outfit', sans-serif",
                             fontSize: 'clamp(4rem, 9vw, 9rem)',
                             fontWeight: '900',
                             lineHeight: 1.0,
                             letterSpacing: '-0.05em',
-                            background: 'linear-gradient(135deg, #ffffff 0%, #A855F7 50%, #d946ef 100%)',
+                            background: 'linear-gradient(to right, var(--primary-color), var(--secondary-color), var(--primary-color), var(--secondary-color))',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                             backgroundClip: 'text',
                         }}
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.3 }}
+                        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     >
                         Aman Kumar
                     </motion.h1>
@@ -86,7 +89,7 @@ const Hero = () => {
                         style={{ color: 'var(--text-secondary)', maxWidth: '650px' }}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.6 }}
+                        transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
                     >
                         1st year student passionate about building modern web applications and learning new technologies.
                         Exploring the world of software development and creating innovative digital solutions.
@@ -96,27 +99,39 @@ const Hero = () => {
                         className="flex flex-wrap gap-5 mt-8"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.7 }}
+                        transition={{ duration: 0.7, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
                     >
                         <Button onClick={() => window.open('/aman_kumar.html', '_blank')}>View Resume</Button>
-                        <Button variant="outline" onClick={() => window.location.href = '#projects'}>View Projects</Button>
+                        <Button variant="outline" onClick={() => navigate('/projects')}>View Projects</Button>
                     </motion.div>
                 </motion.div>
 
                 {/* Profile Photo with Animated Mesh Gradient Background */}
                 <motion.div
                     className="w-full sm:w-auto flex justify-center relative"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
+                    initial={{ opacity: 0, scale: 0.7, rotate: -5 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 >
+                    {/* Orbiting ring */}
+                    <motion.div
+                        className="absolute top-1/2 left-1/2 w-[290px] h-[290px] sm:w-[330px] sm:h-[330px] md:w-[410px] md:h-[410px] lg:w-[455px] lg:h-[455px] rounded-full pointer-events-none border border-dashed"
+                        style={{
+                            borderColor: 'rgba(var(--primary-rgb), 0.15)',
+                            transform: 'translate(-50%, -50%)',
+                        }}
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                    >
+                        <div className="absolute -top-1.5 left-1/2 w-3 h-3 rounded-full" style={{ background: 'var(--primary-color)', boxShadow: '0 0 15px var(--primary-color)' }} />
+                    </motion.div>
                     {/* Animated Mesh Gradient Background */}
                     <div
                         className="absolute top-1/2 left-1/2 w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px] lg:w-[500px] lg:h-[500px] rounded-full pointer-events-none"
                         style={{
-                            background: 'conic-gradient(from 0deg, #A855F7, #3b82f6, #d946ef, #06b6d4, #A855F7)',
+                            background: 'conic-gradient(from 0deg, var(--primary-color), var(--secondary-color), var(--primary-color), var(--secondary-color), var(--primary-color))',
                             filter: 'blur(80px)',
-                            opacity: 0.4,
+                            opacity: 0.12,
                             animation: 'mesh-rotate 12s linear infinite',
                             transform: 'translate(-50%, -50%)',
                         }}
@@ -124,7 +139,7 @@ const Hero = () => {
                     <div
                         className="absolute top-1/2 left-1/2 w-[200px] h-[200px] sm:w-[260px] sm:h-[260px] md:w-[320px] md:h-[320px] lg:w-[380px] lg:h-[380px] rounded-full pointer-events-none"
                         style={{
-                            background: 'radial-gradient(circle, rgba(168, 85, 247, 0.5), transparent 70%)',
+                            background: 'radial-gradient(circle, rgba(var(--primary-rgb), 0.2), transparent 70%)',
                             animation: 'pulse-glow 4s ease-in-out infinite',
                             transform: 'translate(-50%, -50%)',
                         }}
@@ -135,18 +150,18 @@ const Hero = () => {
                         className="relative w-[260px] h-[260px] sm:w-[300px] sm:h-[300px] md:w-[380px] md:h-[380px] lg:w-[420px] lg:h-[420px] rounded-full p-[5px] cursor-default transition-all duration-400 z-10"
                         style={{
                             background: 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))',
-                            boxShadow: '0 0 0 6px rgba(168,85,247,0.15), 0 20px 50px rgba(168,85,247,0.35)',
+                            boxShadow: '0 0 0 2px rgba(var(--primary-rgb), 0.3)',
                         }}
                         onMouseEnter={e => {
                             if (window.innerWidth > 768) {
                                 e.currentTarget.style.transform = 'scale(1.03)';
-                                e.currentTarget.style.boxShadow = '0 0 0 8px rgba(168,85,247,0.25), 0 25px 60px rgba(168,85,247,0.5)';
+                                e.currentTarget.style.boxShadow = '0 0 0 4px rgba(var(--primary-rgb), 0.5), 0 15px 40px rgba(var(--primary-rgb), 0.25)';
                             }
                         }}
                         onMouseLeave={e => {
                             if (window.innerWidth > 768) {
                                 e.currentTarget.style.transform = 'scale(1)';
-                                e.currentTarget.style.boxShadow = '0 0 0 6px rgba(168,85,247,0.15), 0 20px 50px rgba(168,85,247,0.35)';
+                                e.currentTarget.style.boxShadow = '0 0 0 2px rgba(var(--primary-rgb), 0.3)';
                             }
                         }}
                     >
