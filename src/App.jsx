@@ -1,29 +1,39 @@
 import React, { useState, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ThemeProvider } from './context/ThemeContext';
+import ScrollToTop from './components/ScrollToTop';
 import Navbar from './components/Navbar';
 import Hero from './components/sections/Hero';
 import About from './components/sections/About';
 import Skills from './components/sections/Skills';
 import Projects from './components/sections/Projects';
+import FigmaDesigns from './components/sections/FigmaDesigns';
+import Hackathons from './components/sections/Hackathons';
+import Achievements from './components/sections/Achievements';
+import Education from './components/sections/Education';
 import Certificates from './components/sections/Certificates';
+import Resume from './components/sections/Resume';
 import Contact from './components/sections/Contact';
 import Footer from './components/sections/Footer';
 import './App.css';
-import CustomCursor from './components/common/CustomCursor';
+
+
 import ThemeSwitcher from './components/common/ThemeSwitcher';
 import Loader from './components/common/Loader';
 import FloatingLogos from './components/common/FloatingLogos';
 import PageNavigator from './components/common/PageNavigator';
+import CustomCursor from './components/common/CustomCursor';
+
 
 import { useTheme } from './context/ThemeContext';
 
 function App() {
   const { theme } = useTheme();
   const [time, setTime] = useState(new Date().toLocaleTimeString());
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAppVisible, setIsAppVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAppVisible, setIsAppVisible] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -38,18 +48,20 @@ function App() {
   return (
     <div className="App">
       <CustomCursor />
-      <ThemeSwitcher />
+
 
       {/* Loading Screen Overlay */}
-      {isLoading && (
-        <Loader
-          onStartExiting={() => setIsAppVisible(true)}
-          onComplete={() => setIsLoading(false)}
-        />
-      )}
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <Loader
+            onStartExiting={() => setIsAppVisible(true)}
+            onComplete={() => setIsLoading(false)}
+          />
+        )}
+      </AnimatePresence>
 
       <div
-        className={`transition-all duration-1000 ease-[cubic-bezier(0.76,0,0.24,1)] ${!isAppVisible ? 'opacity-0 scale-[0.96] blur-md' : 'opacity-100 scale-100 blur-0'
+        className={`transition-all duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] ${!isAppVisible ? 'opacity-0 scale-[0.96] blur-md' : 'opacity-100 scale-100 blur-0'
           }`}
       >
         {/* Global Animated Floating Logos Background */}
@@ -60,7 +72,7 @@ function App() {
 
         <div className="os-window">
           {/* Premium Terminal Title Bar */}
-          <div className="os-titlebar relative flex items-center justify-between px-4 py-3 bg-[#0a0f1c]/50 border-b border-white/5 shadow-sm">
+          <div className="os-titlebar relative flex items-center justify-between border-b border-white/5 shadow-sm">
             {/* Left: Terminal Path */}
             <div className="flex items-center gap-2 z-10">
               <div className="w-3 h-3 rounded-full bg-[var(--primary-color)]/20 flex items-center justify-center">
@@ -107,13 +119,17 @@ function App() {
           <div className="os-content" id="os-content-scroll">
             <Navbar />
 
-            {/* Main Viewport Routing */}
             <Routes>
               <Route path="/" element={<><Helmet><title>Aman | Developer Portfolio</title></Helmet><Hero /></>} />
               <Route path="/about" element={<><Helmet><title>About | Aman Kumar</title></Helmet><About /></>} />
               <Route path="/skills" element={<><Helmet><title>Skills & Tech Stack</title></Helmet><Skills /></>} />
               <Route path="/projects" element={<><Helmet><title>Projects Portfolio</title></Helmet><Projects /></>} />
+              <Route path="/figma" element={<><Helmet><title>Figma Designs</title></Helmet><FigmaDesigns /></>} />
+              <Route path="/hackathons" element={<><Helmet><title>Hackathon Experiences</title></Helmet><Hackathons /></>} />
+              <Route path="/achievements" element={<><Helmet><title>Achievements & Awards</title></Helmet><Achievements /></>} />
+              <Route path="/education" element={<><Helmet><title>Education | Aman Kumar</title></Helmet><Education /></>} />
               <Route path="/certificates" element={<><Helmet><title>Certifications</title></Helmet><Certificates /></>} />
+              <Route path="/resume" element={<><Helmet><title>Resume | Aman Kumar</title></Helmet><Resume /></>} />
               <Route path="/contact" element={<><Helmet><title>Contact Me</title></Helmet><Contact /></>} />
             </Routes>
 
@@ -121,7 +137,7 @@ function App() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

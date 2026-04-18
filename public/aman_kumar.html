@@ -26,7 +26,7 @@
         body {
             font-family: var(--primary-font);
             color: var(--text-color);
-            line-height: 1.3;
+            line-height: 1.6;
             background-color: #f0f0f0;
             padding: 40px 0;
         }
@@ -52,9 +52,8 @@
         .resume-page {
             background-color: #fff;
             max-width: 210mm;
-            min-height: 297mm;
             margin: 0 auto;
-            padding: 15mm;
+            padding: 12mm;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             position: relative;
         }
@@ -157,12 +156,12 @@
         }
 
         section {
-            margin-bottom: 20px;
+            margin-bottom: 42px;
         }
 
         h2 {
             font-family: var(--header-font);
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 400;
             text-transform: uppercase;
             border-bottom: 1.5px solid var(--secondary-line);
@@ -174,12 +173,12 @@
 
         .section-item {
             margin-bottom: 12px;
-            font-size: 13px;
+            font-size: 15px;
         }
 
         .section-item b {
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15.5px;
             display: inline-block;
             margin-bottom: 3px;
         }
@@ -191,8 +190,8 @@
         .bullet-list li {
             position: relative;
             padding-left: 15px;
-            margin-bottom: 4px;
-            font-size: 13px;
+            margin-bottom: 8px;
+            font-size: 16px;
         }
 
         .bullet-list li::before {
@@ -200,6 +199,21 @@
             position: absolute;
             left: 0;
             font-weight: bold;
+        }
+
+        .cert-list li {
+            font-size: 15.5px;
+            margin-bottom: 8px;
+        }
+
+        .hack-list li {
+            font-size: 15.5px;
+            margin-bottom: 8px;
+        }
+
+        .achievement-list li {
+            font-size: 18px;
+            margin-bottom: 12px;
         }
 
         /* Skills specific */
@@ -252,7 +266,7 @@
         }
 
         .education-entry b {
-            font-size: 15px;
+            font-size: 17px;
             display: block;
         }
 
@@ -271,8 +285,8 @@
         }
 
         .summary-text {
-            font-size: 13px;
-            line-height: 1.4;
+            font-size: 16px;
+            line-height: 1.7;
             margin-bottom: 15px;
             font-style: italic;
         }
@@ -296,6 +310,7 @@
         <div class="links-bar">
             <a href="https://linkedin.com/in/aman-kumar" class="link-item"><i class="fab fa-linkedin"></i> LinkedIn</a>
             <a href="https://github.com/amankumarb778-crypto" class="link-item"><i class="fab fa-github"></i> Github</a>
+            <a href="https://youtube.com/@AmanKumar" class="link-item"><i class="fab fa-youtube"></i> YouTube</a>
             <a href="#" class="link-item"><i class="fas fa-globe"></i> Portfolio</a>
             <a href="#" class="link-item"><i class="fas fa-code"></i> Leetcode</a>
             <a href="#" class="link-item"><i class="fab fa-twitter"></i> X (Twitter)</a>
@@ -306,25 +321,34 @@
                 <section>
                     <h2>SKILLS</h2>
                     <ul class="bullet-list">
-                        <li><b>Languages & Frameworks:</b> JavaScript (ES6+), C, C++, React.js, Tailwind CSS, HTML5,
-                            CSS3, Next.js (Exploring)</li>
-                        <li><b>Databases & Backend:</b> MongoDB, REST APIs, Node.js, Express.js</li>
-                        <li><b>Tools & Platforms:</b> Git, GitHub, Postman, Figma, Netlify</li>
+                        <li><b>Frontend & UI:</b> React.js, HTML5, CSS3, Tailwind CSS, Redux, Material UI, Framer Motion
+                        </li>
+                        <li><b>Backend & Database:</b> Node.js, Express.js, MongoDB, PostgreSQL, Supabase, REST APIs
+                        </li>
+                        <li><b>Languages:</b> JavaScript (ES6+), C, C++</li>
+                        <li><b>Libraries & Tools:</b> Formik, Yup, Stitches, Git, GitHub, VS Code, Vite, Figma, Postman
+                        </li>
+                        <li><b>Hosting & Cloud:</b> Netlify, Vercel, Render, Cloudinary</li>
                     </ul>
                 </section>
 
                 <section>
                     <h2>CERTIFICATES</h2>
-                    <ul class="bullet-list">
-                        <li>MongoDB Certification</li>
-                        <li>Javascript basic</li>
-                        <li>Node.js basic</li>
+                    <ul class="bullet-list cert-list">
+                        <li>Udemy Certificate of Completion</li>
+                        <li>PostgreSQL Certification — CodingGita</li>
+                        <li>Node.js Certification — CodingGita</li>
+                        <li>Responsive Web Design — FreeCodeCamp</li>
+                        <li>Problem Solving (Basic) — HackerRank</li>
+                        <li>Doppelganger — OpenPools (Hackathon)</li>
+                        <li>ArtPark CodeForge Hackathon</li>
+                        <li>Hacrux Hackathon Excellence</li>
                     </ul>
                 </section>
 
                 <section>
                     <h2>HACKATHON</h2>
-                    <ul class="bullet-list">
+                    <ul class="bullet-list hack-list">
                         <li><b>Redesign Hackathon — Top 4 Finalist</b><br>Out of 150 students, Round 1 Qualifier &
                             Finalist (Top 4)</li>
                         <li><b>LNMIT Hackathon — Finalist</b><br>Round 1 Qualifier & Finalist</li>
@@ -338,25 +362,17 @@
                     <div class="education-entry">
                         <b>Swaminarayan University</b>
                         <p>Bachelor of Engineering in CE</p>
-                        <p class="date">2025 - 2029</p>
+                        <p class="date">2023 - 2027</p>
+                        <p style="font-weight: 700; color: #333;">Result: 8.34 CGPA</p>
                     </div>
                     <div class="education-entry">
                         <b>MLSM Darbhanga</b>
                         <p>Class 12 (Science)</p>
-                        <p class="date">2022 - 2024</p>
+                        <p class="date">2021 - 2023</p>
+                        <p style="font-weight: 700; color: #333;">Result: 75% Score</p>
                     </div>
                 </section>
 
-                <section>
-                    <h2>LANGUAGE</h2>
-                    <div class="section-item">
-                        <span class="language-item">English</span>
-                        <span class="language-divider">|</span>
-                        <span class="language-item">Hindi</span>
-                        <span class="language-divider">|</span>
-                        <span class="language-item">Maithili</span>
-                    </div>
-                </section>
             </aside>
 
             <main class="right-col">
@@ -389,6 +405,8 @@
                         <div class="entry-links">
                             <b>Links:</b> <a href="https://nexuss-ai.netlify.app">Live</a> | <a
                                 href="https://github.com/amankumarb778-crypto/Nexus-AI-charusat-hackathon.git">Github</a>
+                            | <a href="https://youtu.be/nexus-ai-demo">YouTube</a> | <a
+                                href="https://documenter.getpostman.com/view/nexus-ai-api">API Docs</a>
                         </div>
                     </div>
 
@@ -407,7 +425,8 @@
                         <div class="entry-detail"><b>Technologies:</b> React, Framer Motion, Tailwind CSS</div>
                         <div class="entry-links">
                             <b>Links:</b> <a href="https://irctc-blush-omega.vercel.app/">Live</a> | <a
-                                href="https://github.com/amankumarb778-crypto/irctc.git">Github</a>
+                                href="https://github.com/amankumarb778-crypto/irctc.git">Github</a> | <a
+                                href="https://youtu.be/irctc-demo-live">YouTube Demo</a>
                         </div>
                     </div>
 
@@ -435,21 +454,17 @@
 
                 <section>
                     <h2>ACHIEVEMENTS</h2>
-                    <ul class="bullet-list">
+                    <ul class="bullet-list achievement-list">
+                        <li>Maintained <b>8.34 CGPA</b> in B.E. Computer Engineering.</li>
+                        <li>Achieved <b>75% score</b> in Class 12th Higher Secondary.</li>
                         <li>Selected as <b>Finalist</b> in LNMIT Hackathon among 500+ teams.</li>
                         <li><b>Finalist</b> in OceanLab X Charusat Hackathon.</li>
-                        <li>Consistent performer in problem-solving platforms.</li>
+                        <li><b>Top 4 Finalist</b> in Redesign Hackathon at CodingGita.</li>
                     </ul>
                 </section>
 
-                <section>
-                    <h2>EXPLORING</h2>
-                    <ul class="bullet-list">
-                        <li>DSA and Problem Solving</li>
-                        <li>Backend Scalability</li>
-                        <li>Advanced React Architecture</li>
-                    </ul>
-                </section>
+
+
             </main>
         </div>
     </div>

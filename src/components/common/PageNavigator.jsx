@@ -8,6 +8,9 @@ const ROUTES = [
     '/about',
     '/skills',
     '/projects',
+    '/figma',
+    '/hackathons',
+    '/achievements',
     '/certificates',
     '/contact'
 ];

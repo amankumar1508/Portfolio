@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import doppelgangerCert from '../../assets/openpools_doppelganger.png';
+import { CardContainer, CardBody, CardItem } from '../ui/3d-card';
 
 const certificatesData = [
     {
@@ -11,6 +12,7 @@ const certificatesData = [
         description: 'Successfully completed the comprehensive course on Udemy, covering key concepts and practical applications.',
         image: 'https://udemy-certificate.s3.amazonaws.com/image/UC-fc5e81aa-82be-4709-8f64-ca7141c718dc.jpg',
         link: 'https://www.udemy.com/certificate/UC-fc5e81aa-82be-4709-8f64-ca7141c718dc/',
+        category: 'Skill',
     },
     {
         id: 2,
@@ -20,11 +22,73 @@ const certificatesData = [
         description: 'Participated in Doppelganger, a collaborative 30-hour build sprint hosted on OpenPools, where teams transformed their Professional DNA into real-world solutions.',
         image: doppelgangerCert,
         link: 'https://www.openpools.in',
+        category: 'Hackathon',
     },
+    {
+        id: 3,
+        title: 'ArtPark CodeForge Hackathon',
+        issuer: 'ArtPark',
+        date: '2024',
+        description: 'Participated in the ArtPark CodeForge Hackathon, collaborating with a team in the Build & Submit Prototype Development Round.',
+        image: 'https://res.cloudinary.com/dgg4scip6/image/upload/q_auto/f_auto/v1776414169/98072f4c-ba9b-4ef2-a82a-b4dcf6249141-1_1_hxpndr.png',
+        link: 'https://res.cloudinary.com/dgg4scip6/image/upload/q_auto/f_auto/v1776414169/98072f4c-ba9b-4ef2-a82a-b4dcf6249141-1_1_hxpndr.png',
+        category: 'Hackathon',
+    },
+    {
+        id: 4,
+        title: 'PostgreSQL Certification',
+        issuer: 'CodingGita',
+        date: '2024',
+        description: 'Successfully completed PostgreSQL concepts and practical applications.',
+        image: 'https://res.cloudinary.com/dgg4scip6/image/upload/q_auto/f_auto/v1776413916/postgress_s4bzit.png',
+        link: 'https://res.cloudinary.com/dgg4scip6/image/upload/q_auto/f_auto/v1776413916/postgress_s4bzit.png',
+        category: 'Skill',
+    },
+    {
+        id: 5,
+        title: 'Node.js Certification',
+        issuer: 'CodingGita',
+        date: '2024',
+        description: 'Successfully completed backend development using Node.js.',
+        image: 'https://res.cloudinary.com/dgg4scip6/image/upload/q_auto/f_auto/v1776413904/nodejs1_gz6dsk.png',
+        link: 'https://res.cloudinary.com/dgg4scip6/image/upload/q_auto/f_auto/v1776413904/nodejs1_gz6dsk.png',
+        category: 'Skill',
+    },
+    {
+        id: 6,
+        title: 'Hacrux Hackathon Excellence',
+        issuer: 'Hacrux',
+        date: '2025',
+        description: 'Participated in the Hacrux high-intensity hackathon sprint, collaborating with a team to architect and build an innovative project under strict deadlines. Demonstrated rapid prototyping and problem-solving skills.',
+        image: 'https://res.cloudinary.com/dgg4scip6/image/upload/q_auto/f_auto/v1776413482/Aman_kumar_wplz4x.png',
+        link: 'https://res.cloudinary.com/dgg4scip6/image/upload/q_auto/f_auto/v1776413482/Aman_kumar_wplz4x.png',
+        category: 'Hackathon',
+    },
+    {
+        id: 7,
+        title: 'Responsive Web Design',
+        issuer: 'FreeCodeCamp',
+        date: '2023',
+        description: 'Certified in Responsive Web Design, covering HTML/CSS, Flexbox, Grid, and accessible design patterns.',
+        image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=800',
+        link: 'https://www.freecodecamp.org/certification/aman-kumar/responsive-web-design',
+        category: 'Skill',
+    },
+    {
+        id: 8,
+        title: 'Problem Solving (Basic)',
+        issuer: 'HackerRank',
+        date: '2024',
+        description: 'Demonstrated proficiency in solving basic algorithms and data structure challenges on the HackerRank platform.',
+        image: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&q=80&w=800',
+        link: 'https://www.hackerrank.com/certificates/problem-solving-basic',
+        category: 'Skill',
+    }
 ];
 
 const Certificates = () => {
     const [selectedId, setSelectedId] = useState(null);
+    const [filter, setFilter] = useState('All');
 
     return (
         <section id="certificates" className="section">
@@ -32,49 +96,72 @@ const Certificates = () => {
                 <motion.h2
                     className="section-title"
                     initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
                     Certifications
                 </motion.h2>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
-                    {certificatesData.map((cert, index) => (
-                        <motion.div
-                            layoutId={`card-container-${cert.id}`}
-                            key={cert.id}
-                            className="glass-card"
-                            initial={{ opacity: 0, y: 40, scale: 0.9 }}
-                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                            whileHover={{
-                                y: -10,
-                                scale: 1.02,
-                                boxShadow: '0 25px 50px rgba(0,0,0,0.4), 0 0 20px rgba(var(--primary-rgb), 0.15)',
-                                borderColor: 'rgba(var(--primary-rgb), 0.3)',
-                            }}
-                            onClick={() => setSelectedId(cert.id)}
-                            style={{ cursor: 'pointer', overflow: 'hidden' }}
+                {/* Filter Buttons */}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '20px', flexWrap: 'wrap' }}>
+                    {['All', 'Hackathon', 'Skill'].map(cat => (
+                        <button
+                            key={cat}
+                            onClick={() => setFilter(cat)}
+                            className={`btn ${filter === cat ? 'btn-primary' : 'btn-outline'} cursor-target`}
                         >
-                            <motion.div className="cert-image-container" style={{ height: '200px', overflow: 'hidden', position: 'relative' }}>
-                                <motion.img
-                                    src={cert.image}
-                                    alt={cert.title}
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
-                                    whileHover={{ scale: 1.08 }}
-                                />
-                            </motion.div>
-                            <div style={{ padding: '25px' }}>
-                                <motion.h3 style={{ marginBottom: '10px', fontSize: '1.5rem', fontWeight: '700' }}>{cert.title}</motion.h3>
-                                <motion.p style={{ color: 'var(--primary-color)', fontWeight: '600', marginBottom: '12px', fontSize: '1.2rem' }}>{cert.issuer}</motion.p>
-                                <motion.p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', lineHeight: '1.7' }}>
-                                    {cert.description}
-                                </motion.p>
-                            </div>
-                        </motion.div>
+                            {cat}
+                        </button>
                     ))}
+                </div>
+
+                {/* Certificate Detail Cards with 3D Effect */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '50px', padding: '20px 0' }}>
+                    <AnimatePresence>
+                        {certificatesData.filter(cert => filter === 'All' || cert.category === filter).map((cert, index) => (
+                            <CardContainer key={cert.id} containerClassName="py-10">
+                                <CardBody
+                                    className="bg-[var(--bg-card)] backdrop-blur-md relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border transition-all duration-300"
+                                    style={{ border: '1px solid var(--border-main)' }}
+                                >
+                                    <CardItem
+                                        translateZ="50"
+                                        className="text-xl font-bold text-white dark:text-white"
+                                    >
+                                        {cert.title}
+                                    </CardItem>
+                                    <CardItem
+                                        as="p"
+                                        translateZ="60"
+                                        className="text-var(--primary-color) text-sm max-w-sm mt-2 font-bold"
+                                    >
+                                        {cert.issuer}
+                                    </CardItem>
+                                    <CardItem translateZ="100" className="w-full mt-4">
+                                        <img
+                                            src={cert.image}
+                                            height="1000"
+                                            width="1000"
+                                            className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
+                                            alt="thumbnail"
+                                            onClick={() => setSelectedId(cert.id)}
+                                            style={{ cursor: 'pointer' }}
+                                        />
+                                    </CardItem>
+                                    <div className="flex justify-center items-center mt-20">
+                                        <CardItem
+                                            translateZ={20}
+                                            as="button"
+                                            onClick={() => setSelectedId(cert.id)}
+                                            className="px-6 py-2 rounded-xl text-sm font-semibold text-white bg-[var(--primary-color)]/20 hover:bg-[var(--primary-color)]/40 hover:scale-105 transition-all cursor-target"
+                                        >
+                                            View Details →
+                                        </CardItem>
+                                    </div>
+                                </CardBody>
+                            </CardContainer>
+                        ))}
+                    </AnimatePresence>
                 </div>
 
                 <AnimatePresence>
@@ -115,6 +202,7 @@ const Certificates = () => {
                             >
                                 <button
                                     onClick={() => setSelectedId(null)}
+                                    className="cursor-target"
                                     style={{
                                         position: 'absolute',
                                         top: '15px',
@@ -157,7 +245,7 @@ const Certificates = () => {
                                                     href={cert.link}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="btn btn-primary"
+                                                    className="btn btn-primary cursor-target"
                                                     style={{ textDecoration: 'none', display: 'inline-block' }}
                                                 >
                                                     Verify Credential

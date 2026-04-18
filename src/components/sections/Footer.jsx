@@ -6,10 +6,11 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     const socialLinks = [
-        { name: 'GitHub', url: 'https://github.com/yourusername', icon: 'fab fa-github' },
-        { name: 'LinkedIn', url: 'https://linkedin.com/in/yourusername', icon: 'fab fa-linkedin' },
+        { name: 'GitHub', url: 'https://github.com/amankumarb778-crypto', icon: 'fab fa-github' },
+        { name: 'LinkedIn', url: 'https://linkedin.com/in/aman-kumar-067825379/', icon: 'fab fa-linkedin' },
+        { name: 'LeetCode', url: 'https://leetcode.com/u/OVzm6rcAP2/', icon: 'fas fa-code' },
         { name: 'Twitter', url: 'https://twitter.com/yourusername', icon: 'fab fa-twitter' },
-        { name: 'Instagram', url: 'https://instagram.com/yourusername', icon: 'fab fa-instagram' }
+        { name: 'YouTube', url: 'https://youtube.com/@yourchannel', icon: 'fab fa-youtube' }
     ];
 
     const navLinks = [

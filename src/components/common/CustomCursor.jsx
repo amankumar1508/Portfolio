@@ -3,26 +3,16 @@ import './CustomCursor.css';
 
 const CustomCursor = () => {
     const cursorRef = useRef(null);
-    const cursorDotRef = useRef(null);
     const [isHovering, setIsHovering] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         const cursor = cursorRef.current;
-        const cursorDot = cursorDotRef.current;
-
         const moveCursor = (e) => {
             // Show cursor when moving (in case it started hidden)
             if (!isVisible) setIsVisible(true);
 
             const { clientX: x, clientY: y } = e;
-
-            // Main cursor (outer circle) - using slightly smoother animation via requestAnimationFrame logic implicitly handled by browser optimization or CSS 
-            // strict tracking for dot
-            if (cursorDot) {
-                cursorDot.style.left = `${x}px`;
-                cursorDot.style.top = `${y}px`;
-            }
 
             // Follower cursor (outer circle) - using simple direct update, CSS handles smoothness
             if (cursor) {
@@ -109,11 +99,6 @@ const CustomCursor = () => {
             >
                 {isHovering ? '</>' : '>_'}
             </div>
-            {/* The dot is kept simply as the direct tip tracking point to maintain pixel-perfect precision tracking */}
-            <div
-                ref={cursorDotRef}
-                className={`custom-cursor-dev-dot ${isHovering ? 'hover' : ''}`}
-            />
         </>
     );
 };

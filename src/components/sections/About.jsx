@@ -3,7 +3,7 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 
 const About = () => {
     const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
+    const isInView = useInView(ref, { margin: "0px" });
 
     // Parallax for background text
     const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -41,13 +41,14 @@ const About = () => {
                 opacity: bgTextOpacity,
                 fontSize: '25vw',
                 fontWeight: '900',
-                color: 'rgba(255,255,255,1)',
+                color: 'var(--text-main)',
                 zIndex: 0,
                 whiteSpace: 'nowrap',
                 pointerEvents: 'none',
                 fontFamily: 'var(--font-heading)',
                 textTransform: 'uppercase',
                 transform: 'translate(-50%, -50%)',
+                filter: 'blur(2px)'
             }}>
                 ABOUT
             </motion.div>
@@ -62,6 +63,7 @@ const About = () => {
                     <motion.h2
                         className="section-title"
                         variants={fadeUp}
+                        animate="visible"
                         style={{
                             fontSize: 'clamp(3rem, 8vw, 4.5rem)',
                             textAlign: 'center',
@@ -73,9 +75,9 @@ const About = () => {
                     >
                         About <motion.span
                             style={{ color: 'var(--primary-color)', display: 'inline-block' }}
-                            animate={isInView ? {
+                            animate={{
                                 textShadow: ['0 0 0px var(--primary-color)', '0 0 20px var(--primary-color)', '0 0 0px var(--primary-color)']
-                            } : {}}
+                            }}
                             transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                         >Me</motion.span>
                     </motion.h2>
@@ -83,6 +85,7 @@ const About = () => {
                     {/* Paragraphs with staggered reveals */}
                     <motion.div
                         variants={fadeUp}
+                        animate="visible"
                         style={{
                             fontSize: '1.5rem',
                             color: 'var(--text-secondary)',
@@ -115,7 +118,7 @@ const About = () => {
                 }}>
                     {[
                         { label: 'Location', value: 'India', icon: 'fa-location-dot' },
-                        { label: 'Education', value: '1st Year BE', icon: 'fa-graduation-cap' },
+                        { label: 'Education', value: 'Swaminarayan University', icon: 'fa-graduation-cap' },
                         { label: 'Interests', value: 'Web & Crypto', icon: 'fa-laptop-code' }
                     ].map((item, idx) => (
                         <motion.div
@@ -123,25 +126,37 @@ const About = () => {
                             custom={idx}
                             variants={tileVariants}
                             initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
+                            animate="visible"
                             whileHover={{
-                                y: -8,
-                                scale: 1.03,
-                                boxShadow: '0 20px 40px rgba(0,0,0,0.3), 0 0 20px rgba(var(--primary-rgb), 0.15)',
-                                borderColor: 'rgba(var(--primary-rgb), 0.3)',
+                                y: -10,
+                                scale: 1.05,
+                                boxShadow: '0 20px 40px rgba(0,0,0,0.2), 0 0 20px rgba(var(--primary-rgb), 0.1)',
+                                borderColor: 'var(--primary-color)',
+                                background: 'rgba(var(--primary-rgb), 0.05)'
                             }}
                             className="glass-card"
-                            style={{ textAlign: 'center', cursor: 'default' }}
+                            style={{
+                                textAlign: 'center',
+                                cursor: 'default',
+                                background: 'var(--bg-card)',
+                                border: '1px solid var(--border-main)',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: '30px 20px'
+                            }}
                         >
-                            <motion.i
-                                className={`fa-solid ${item.icon}`}
-                                style={{ fontSize: '1.5rem', color: 'var(--primary-color)', marginBottom: '15px', display: 'block' }}
-                                animate={{ y: [0, -4, 0] }}
-                                transition={{ duration: 2, repeat: Infinity, delay: idx * 0.3 }}
-                            />
-                            <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: '5px', letterSpacing: '1px' }}>{item.label}</div>
-                            <div style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--text-main)' }}>{item.value}</div>
+                            <div className="mb-4 p-4 rounded-full bg-[var(--primary-color)]/10 text-[var(--primary-color)]">
+                                <motion.i
+                                    className={`fa-solid ${item.icon}`}
+                                    style={{ fontSize: '1.8rem', display: 'block' }}
+                                    animate={{ y: [0, -4, 0] }}
+                                    transition={{ duration: 2, repeat: Infinity, delay: idx * 0.3 }}
+                                />
+                            </div>
+                            <div style={{ fontSize: '0.75rem', fontWeight: '800', color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '2px' }}>{item.label}</div>
+                            <div style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--text-main)', letterSpacing: '-0.02em' }}>{item.value}</div>
                         </motion.div>
                     ))}
                 </div>

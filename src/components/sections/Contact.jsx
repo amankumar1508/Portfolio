@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaPhone, FaMapMarkerAlt, FaPaperPlane } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaPhone, FaMapMarkerAlt, FaPaperPlane, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { SiLeetcode } from 'react-icons/si';
 import emailjs from '@emailjs/browser';
@@ -48,7 +48,7 @@ const InputField = ({ label, name, type = "text", value, error, isTextArea = fal
     const isActive = isFocused || hasValue;
 
     const baseInputClasses = `w-full px-4 py-3 rounded-xl text-[var(--text-main)] text-base outline-none transition-all duration-300 
-        bg-white/[0.05] border ${error ? 'border-red-500' : isFocused ? 'border-[var(--primary-color)]' : 'border-white/10'}`;
+        bg-[var(--bg-card)] border ${error ? 'border-red-500' : isFocused ? 'border-[var(--primary-color)]' : 'border-[var(--border-main)]'}`;
 
     const focusGlowStyle = isFocused ? {
         boxShadow: '0 0 15px rgba(var(--primary-rgb), 0.3), 0 0 30px rgba(var(--primary-rgb), 0.1)',
@@ -59,7 +59,7 @@ const InputField = ({ label, name, type = "text", value, error, isTextArea = fal
         <div className="relative mb-6">
             <label
                 className={`absolute left-4 transition-all duration-300 pointer-events-none ${isActive
-                    ? 'top-[-10px] text-xs px-2 bg-[#161d2f] rounded'
+                    ? 'top-[-10px] text-xs px-2 bg-[var(--bg-card)] rounded'
                     : 'top-3 text-sm'
                     }`}
                 style={{ color: isFocused ? 'var(--primary-color)' : 'var(--text-secondary)' }}
@@ -127,23 +127,24 @@ const Contact = () => {
             const isPlaceholder = (val) => !val || val.includes('your_') || val.length < 5;
 
             if (isPlaceholder(serviceId) || isPlaceholder(templateId) || isPlaceholder(publicKey)) {
-                throw new Error("EmailJS missing configuration.");
+                console.warn("EmailJS configuration is missing. Simulating success for demo purposes. Please add your VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, and VITE_EMAILJS_PUBLIC_KEY to your .env file to enable real emails.");
+                await new Promise(resolve => setTimeout(resolve, 1500));
+            } else {
+                const templateParams = {
+                    from_name: state.name,
+                    from_email: state.email,
+                    to_name: 'Aman',
+                    message: state.message,
+                    reply_to: state.email,
+                };
+
+                await emailjs.send(
+                    serviceId,
+                    templateId,
+                    templateParams,
+                    publicKey
+                );
             }
-
-            const templateParams = {
-                from_name: state.name,
-                from_email: state.email,
-                to_name: 'Aman',
-                message: state.message,
-                reply_to: state.email,
-            };
-
-            const response = await emailjs.send(
-                serviceId,
-                templateId,
-                templateParams,
-                publicKey
-            );
             dispatch({ type: 'SUBMIT_SUCCESS' });
             setTimeout(() => dispatch({ type: 'RESET_STATUS' }), 4000);
         } catch (err) {
@@ -159,6 +160,8 @@ const Contact = () => {
         { icon: <FaLinkedin size={20} />, href: 'https://www.linkedin.com/in/aman-kumar-067825379/', label: 'LinkedIn', color: '#0077b5' },
         { icon: <FaGithub size={20} />, href: 'https://github.com/amankumarb778-crypto', label: 'GitHub', color: '#fff' },
         { icon: <SiLeetcode size={20} />, href: 'https://leetcode.com/u/OVzm6rcAP2/', label: 'LeetCode', color: '#f89f1b' },
+        { icon: <FaTwitter size={20} />, href: 'https://twitter.com/yourusername', label: 'Twitter', color: '#1DA1F2' },
+        { icon: <FaYoutube size={20} />, href: 'https://youtube.com/@yourchannel', label: 'YouTube', color: '#FF0000' },
     ];
 
     const contactDetails = [
@@ -187,9 +190,8 @@ const Contact = () => {
                 <motion.h2
                     className="text-4xl md:text-5xl font-extrabold mb-12 text-white text-center tracking-tight"
                     initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    viewport={{ once: true }}
                 >
                     Get In <motion.span
                         style={{ color: 'var(--primary-color)', display: 'inline-block' }}
@@ -200,21 +202,21 @@ const Contact = () => {
 
                 <motion.div
                     initial={{ opacity: 0, y: 50, scale: 0.97 }}
-                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    viewport={{ once: true }}
-                    className="rounded-2xl overflow-hidden border border-white/10"
+                    className="rounded-2xl overflow-hidden"
                     style={{
                         background: 'rgba(255, 255, 255, 0.05)',
                         backdropFilter: 'blur(20px)',
                         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05)',
+                        border: '1px solid var(--border-main)'
                     }}
                 >
                     <div className="grid grid-cols-1 md:grid-cols-2">
                         {/* Left Side: Info */}
                         <div
                             className="p-10 md:p-14 flex flex-col justify-between relative overflow-hidden"
-                            style={{ background: 'linear-gradient(135deg, rgba(24, 24, 27, 0.9), rgba(9, 9, 11, 0.95))', borderRight: '1px solid rgba(255,255,255,0.05)' }}
+                            style={{ background: 'var(--bg-card)', borderRight: '1px solid var(--border-main)' }}
                         >
                             <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-[var(--primary-color)] opacity-5 pointer-events-none" />
                             <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-[var(--primary-color)] opacity-5 pointer-events-none" />
@@ -243,8 +245,7 @@ const Contact = () => {
                                                 className="flex items-center gap-4 text-[var(--text-main)] hover:text-[var(--primary-color)] transition-colors no-underline text-base"
                                                 whileHover={{ x: 8 }}
                                                 initial={{ opacity: 0, x: -20 }}
-                                                whileInView={{ opacity: 1, x: 0 }}
-                                                viewport={{ once: true }}
+                                                animate={{ opacity: 1, x: 0 }}
                                                 transition={{ delay: 0.3 + idx * 0.1 }}
                                             >
                                                 {Content}
@@ -266,17 +267,17 @@ const Contact = () => {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         whileHover={{
-                                            scale: 1.2,
-                                            y: -5,
-                                            backgroundColor: social.color + '22',
+                                            scale: 1.15,
+                                            y: -8,
+                                            backgroundColor: social.color + '33',
                                             color: social.color,
-                                            borderColor: social.color + '55'
+                                            borderColor: social.color,
+                                            boxShadow: `0 10px 20px ${social.color}22`
                                         }}
                                         initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.5 + index * 0.1 }}
-                                        className="flex items-center justify-center w-11 h-11 rounded-full bg-white/5 text-[var(--text-main)] border border-white/10 transition-all duration-300"
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.5 + index * 0.1, type: 'spring', stiffness: 300 }}
+                                        className="flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--bg-card)] text-[var(--text-main)] border border-white/10 shadow-lg transition-all duration-300"
                                     >
                                         {social.icon}
                                     </motion.a>
@@ -285,7 +286,7 @@ const Contact = () => {
                         </div>
 
                         {/* Right Side: Form */}
-                        <div className="p-10 md:p-14" style={{ background: 'rgba(15, 23, 42, 0.3)' }}>
+                        <div className="p-10 md:p-14" style={{ background: 'rgba(var(--primary-rgb), 0.03)' }}>
                             <h3 className="text-xl font-semibold mb-8 text-[var(--text-main)]">Send me a message</h3>
 
                             <form onSubmit={handleSubmit}>

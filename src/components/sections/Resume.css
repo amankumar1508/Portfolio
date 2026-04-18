@@ -1,0 +1,71 @@
+.resume-container {
+    overflow-x: hidden;
+}
+
+.resume-paper {
+    min-height: 297mm;
+}
+
+@media print {
+    .resume-container {
+        padding: 0 !important;
+        background: white !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .resume-paper {
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: white !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+    }
+
+    aside {
+        background: #f8f9fa !important;
+        color: #1a1a1a !important;
+        border-right: 1px solid #eee !important;
+    }
+
+    main {
+        background: white !important;
+        color: #1a1a1a !important;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    span,
+    a,
+    li {
+        color: #1a1a1a !important;
+    }
+
+    .text-\[var\(--primary-color\)\] {
+        color: #2563eb !important;
+    }
+
+    .bg-white\/\[0\.02\] {
+        background: #f8f9fa !important;
+    }
+
+    .border-white\/5,
+    .border-white\/10 {
+        border-color: #eee !important;
+    }
+
+    .text-white\/70,
+    .text-white\/60,
+    .text-white\/50,
+    .text-white\/40,
+    .text-white\/30,
+    .text-white\/20 {
+        color: #4a4a4a !important;
+    }
+}

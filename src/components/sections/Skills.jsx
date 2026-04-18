@@ -1,25 +1,61 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaReact, FaJs, FaHtml5, FaCss3Alt, FaNode, FaGitAlt, FaFigma } from 'react-icons/fa';
-import { SiMongodb, SiLeetcode } from 'react-icons/si';
+import { Tilt } from 'react-tilt';
+import { FaReact, FaJs, FaHtml5, FaCss3Alt, FaNode, FaGitAlt, FaFigma, FaCheckCircle, FaPalette } from 'react-icons/fa';
+import { TbBrandVscode } from 'react-icons/tb';
+import {
+    SiMongodb, SiLeetcode, SiFramer, SiFormik,
+    SiTailwindcss, SiPostgresql, SiRedux, SiMui, SiVite,
+    SiPostman, SiSupabase, SiRender, SiNetlify, SiVercel,
+    SiCloudinary, SiCplusplus, SiC, SiExpress
+} from 'react-icons/si';
 
 const rawSkills = [
+    // Frontend (7)
     { name: 'React', category: 'Frontend', level: 90, icon: <FaReact />, color: '#61DAFB' },
-    { name: 'JavaScript', category: 'Frontend', level: 85, icon: <FaJs />, color: '#F7DF1E' },
     { name: 'HTML5', category: 'Frontend', level: 95, icon: <FaHtml5 />, color: '#E34F26' },
     { name: 'CSS3', category: 'Frontend', level: 90, icon: <FaCss3Alt />, color: '#1572B6' },
+    { name: 'Tailwind CSS', category: 'Frontend', level: 85, icon: <SiTailwindcss />, color: '#38B2AC' },
+    { name: 'Redux', category: 'Frontend', level: 80, icon: <SiRedux />, color: '#764ABC' },
+    { name: 'Material UI', category: 'Frontend', level: 75, icon: <SiMui />, color: '#007FFF' },
+    { name: 'Framer Motion', category: 'Frontend', level: 80, icon: <SiFramer />, color: '#0055FF' },
+    // Backend (5)
     { name: 'Node.js', category: 'Backend', level: 75, icon: <FaNode />, color: '#339933' },
+    { name: 'Express', category: 'Backend', level: 80, icon: <SiExpress />, color: '#ffffff' },
     { name: 'MongoDB', category: 'Backend', level: 70, icon: <SiMongodb />, color: '#47A248' },
-    { name: 'Figma', category: 'Design', level: 80, icon: <FaFigma />, color: '#F24E1E' },
-    { name: 'Git', category: 'Tools', level: 85, icon: <FaGitAlt />, color: '#F05032' }
+    { name: 'PostgreSQL', category: 'Backend', level: 70, icon: <SiPostgresql />, color: '#336791' },
+    { name: 'Supabase', category: 'Backend', level: 65, icon: <SiSupabase />, color: '#3ECF8E' },
+    // Languages (3)
+    { name: 'JavaScript', category: 'Languages', level: 85, icon: <FaJs />, color: '#F7DF1E' },
+    { name: 'C++', category: 'Languages', level: 60, icon: <SiCplusplus />, color: '#00599C' },
+    { name: 'C', category: 'Languages', level: 60, icon: <SiC />, color: '#A8B9CC' },
+    // Libraries (3)
+    { name: 'Formik', category: 'Libraries', level: 75, icon: <SiFormik />, color: '#172B4D' },
+    { name: 'Yup', category: 'Libraries', level: 80, icon: <FaCheckCircle />, color: '#FCC72C' },
+    { name: 'Stitches', category: 'Libraries', level: 70, icon: <FaPalette />, color: '#FF0000' },
+    // Tools (5)
+    { name: 'Git', category: 'Tools', level: 85, icon: <FaGitAlt />, color: '#F05032' },
+    { name: 'VS Code', category: 'Tools', level: 90, icon: <TbBrandVscode />, color: '#007ACC' },
+    { name: 'Vite', category: 'Tools', level: 85, icon: <SiVite />, color: '#646CFF' },
+    { name: 'Postman', category: 'Tools', level: 80, icon: <SiPostman />, color: '#FF6C37' },
+    { name: 'Figma', category: 'Tools', level: 80, icon: <FaFigma />, color: '#F24E1E' },
+    // Deployment (4)
+    { name: 'Netlify', category: 'Deployment', level: 80, icon: <SiNetlify />, color: '#00C7B7' },
+    { name: 'Vercel', category: 'Deployment', level: 80, icon: <SiVercel />, color: '#EEEEEE' },
+    { name: 'Render', category: 'Deployment', level: 75, icon: <SiRender />, color: '#46E3B7' },
+    { name: 'Cloudinary', category: 'Deployment', level: 75, icon: <SiCloudinary />, color: '#3448C5' },
 ];
 
-const skillCardVariants = {
-    hidden: { opacity: 0, y: 50, scale: 0.85, rotateX: 15 },
-    visible: (i) => ({
-        opacity: 1, y: 0, scale: 1, rotateX: 0,
-        transition: { duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }
-    })
+const tiltOptions = {
+    reverse: false,
+    max: 15,
+    perspective: 1000,
+    scale: 1.03,
+    speed: 1000,
+    transition: true,
+    axis: null,
+    reset: true,
+    easing: "cubic-bezier(.03,.98,.52,.99)",
 };
 
 const Skills = () => {
@@ -50,75 +86,113 @@ const Skills = () => {
                 <motion.h2
                     className="section-title"
                     initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
                     Technical Skills
                 </motion.h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '30px', marginBottom: '60px' }}>
-                    {sortedSkills.map((skill, index) => (
-                        <motion.div
-                            key={skill.name}
-                            custom={index}
-                            variants={skillCardVariants}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: "-50px" }}
-                            whileHover={{
-                                y: -12,
-                                scale: 1.05,
-                                boxShadow: `0 20px 40px rgba(0,0,0,0.3), 0 0 30px ${skill.color}22`,
-                                borderColor: `${skill.color}44`,
-                            }}
-                            className="glass-card"
-                            style={{ padding: '30px', textAlign: 'center', cursor: 'pointer' }}
-                        >
+
+                {/* Categories Grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '40px' }}>
+                    {['Frontend', 'Backend', 'Languages', 'Libraries', 'Tools', 'Deployment'].map((category, catIndex) => {
+                        const categorySkills = sortedSkills.filter(s => s.category === category);
+                        if (categorySkills.length === 0) return null;
+
+                        return (
                             <motion.div
-                                style={{ fontSize: '3rem', color: skill.color, marginBottom: '15px' }}
-                                whileHover={{ scale: 1.2, rotate: 10 }}
-                                transition={{ type: 'spring', stiffness: 300 }}
+                                key={category}
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: catIndex * 0.15, ease: 'easeOut' }}
                             >
-                                {skill.icon}
+                                <Tilt options={tiltOptions} className="w-full">
+                                    <div
+                                        className="relative rounded-xl p-8 transition-all duration-300 group overflow-hidden"
+                                        style={{
+                                            background: 'var(--bg-card)',
+                                            backdropFilter: 'blur(10px)',
+                                            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                                            border: '1px solid var(--border-main)'
+                                        }}
+                                    >
+                                        {/* Glare overlay */}
+                                        <div
+                                            className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                                            style={{
+                                                background: 'linear-gradient(135deg, rgba(var(--primary-rgb), 0.08) 0%, transparent 50%, rgba(var(--primary-rgb), 0.03) 100%)',
+                                            }}
+                                        />
+
+                                        {/* Top accent line */}
+                                        <div
+                                            className="absolute top-0 left-8 right-8 h-[1px]"
+                                            style={{
+                                                background: `linear-gradient(90deg, transparent, var(--primary-color), transparent)`,
+                                                opacity: 0.3,
+                                            }}
+                                        />
+
+                                        {/* Category Header */}
+                                        <div className="relative z-10 flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
+                                            <div
+                                                className="w-2 h-2 rounded-full"
+                                                style={{
+                                                    background: 'var(--primary-color)',
+                                                    boxShadow: '0 0 8px var(--primary-color)',
+                                                }}
+                                            />
+                                            <h3 className="text-2xl font-bold text-white tracking-wide m-0">{category}</h3>
+                                            <span className="ml-auto text-xs font-mono text-white/30">{categorySkills.length} skills</span>
+                                        </div>
+
+                                        {/* Skills List */}
+                                        <div className="relative z-10 grid grid-cols-1 gap-5">
+                                            {categorySkills.map((skill, index) => (
+                                                <div key={skill.name} className="flex flex-col gap-2">
+                                                    <div className="flex items-center justify-between">
+                                                        <div className="flex items-center gap-3">
+                                                            <span style={{ color: skill.color, fontSize: '1.4rem', filter: `drop-shadow(0 0 6px ${skill.color}40)` }}>{skill.icon}</span>
+                                                            <span className="text-white font-semibold text-base">{skill.name}</span>
+                                                        </div>
+                                                        <span className="text-sm font-mono font-semibold" style={{ color: skill.color }}>{skill.level}%</span>
+                                                    </div>
+
+                                                    <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                                        <motion.div
+                                                            initial={{ width: 0 }}
+                                                            animate={{ width: `${skill.level}%` }}
+                                                            transition={{ duration: 1.5, delay: 0.3 + index * 0.05 }}
+                                                            className="h-full rounded-full"
+                                                            style={{
+                                                                background: `linear-gradient(90deg, ${skill.color}, ${skill.color}88)`,
+                                                                boxShadow: `0 0 12px ${skill.color}44`
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </Tilt>
                             </motion.div>
-                            <h3 style={{ marginBottom: '10px' }}>{skill.name}</h3>
-                            <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden' }}>
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    whileInView={{ width: `${skill.level}%` }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 1.2, delay: 0.3 + index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                                    style={{ height: '100%', background: `linear-gradient(90deg, ${skill.color}, var(--secondary-color))`, borderRadius: '3px' }}
-                                />
-                            </div>
-                            <motion.span
-                                className="text-xs font-mono mt-2 block"
-                                style={{ color: skill.color, opacity: 0.7 }}
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 0.7 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.6 + index * 0.08 }}
-                            >
-                                {skill.level}%
-                            </motion.span>
-                        </motion.div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {/* LeetCode Stats Section */}
                 {leetcodeStats && (
                     <motion.div
                         initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                        viewport={{ once: true }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
                         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                         className="glass-card"
                         style={{
                             padding: '40px',
                             maxWidth: '900px',
                             margin: '0 auto',
-                            background: 'linear-gradient(145deg, rgba(23, 25, 35, 0.95), rgba(17, 24, 39, 0.9))',
-                            border: '1px solid rgba(248, 159, 27, 0.15)',
+                            background: 'var(--bg-card)',
+                            backdropFilter: 'blur(10px)',
+                            border: '1px solid rgba(var(--primary-rgb), 0.15)',
                             position: 'relative',
                             overflow: 'hidden'
                         }}
@@ -174,8 +248,7 @@ const Skills = () => {
                                     <motion.div
                                         style={{ fontSize: '3rem', fontWeight: '800', color: 'white' }}
                                         initial={{ opacity: 0, scale: 0 }}
-                                        whileInView={{ opacity: 1, scale: 1 }}
-                                        viewport={{ once: true }}
+                                        animate={{ opacity: 1, scale: 1 }}
                                         transition={{ delay: 0.3, type: 'spring', bounce: 0.4 }}
                                     >
                                         {leetcodeStats.totalSolved}
@@ -214,8 +287,7 @@ const Skills = () => {
                                     <motion.div
                                         key={item.label}
                                         initial={{ opacity: 0, x: 30 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
+                                        animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: 0.4 + idx * 0.15 }}
                                         whileHover={{ x: 5, background: 'rgba(255,255,255,0.06)' }}
                                         style={{

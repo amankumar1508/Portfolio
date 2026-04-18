@@ -7,32 +7,50 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://amankumar.dev/#about</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://amankumar.dev/about</loc>
+    <lastmod>2026-04-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://amankumar.dev/#skills</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://amankumar.dev/skills</loc>
+    <lastmod>2026-04-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://amankumar.dev/#projects</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://amankumar.dev/projects</loc>
+    <lastmod>2026-04-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://amankumar.dev/#certificates</loc>
+    <loc>https://amankumar.dev/figma</loc>
     <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://amankumar.dev/hackathons</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://amankumar.dev/achievements</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://amankumar.dev/certificates</loc>
+    <lastmod>2026-04-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://amankumar.dev/#contact</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://amankumar.dev/contact</loc>
+    <lastmod>2026-04-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
