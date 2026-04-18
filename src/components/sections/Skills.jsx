@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Tilt } from 'react-tilt';
+import Tilt from "react-parallax-tilt";
 import { FaReact, FaJs, FaHtml5, FaCss3Alt, FaNode, FaGitAlt, FaFigma, FaCheckCircle, FaPalette } from 'react-icons/fa';
 import { TbBrandVscode } from 'react-icons/tb';
 import {
