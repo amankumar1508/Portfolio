@@ -10,12 +10,27 @@ async function generatePDF() {
         });
         const page = await browser.newPage();
 
-        // Wait for dev server to be ready
-        console.log('Navigating to resume page...');
-        await page.goto('http://localhost:5173/aman_kumar.html', {
-            waitUntil: 'networkidle2',
-            timeout: 60000
-        });
+        // Try multiple common Vite ports
+        const ports = [5173, 5174, 5175, 5176, 5177, 5178];
+        let success = false;
+
+        for (const port of ports) {
+            try {
+                console.log(`Trying http://localhost:${port}/aman_kumar.html...`);
+                await page.goto(`http://localhost:${port}/aman_kumar.html`, {
+                    waitUntil: 'networkidle2',
+                    timeout: 5000 // Short timeout for checking
+                });
+                success = true;
+                break;
+            } catch (e) {
+                continue;
+            }
+        }
+
+        if (!success) {
+            throw new Error('Could not connect to dev server on any common port. Please ensure "npm run dev" is running.');
+        }
 
         console.log('Generating PDF...');
         await page.pdf({
